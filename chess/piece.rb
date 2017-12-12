@@ -1,7 +1,7 @@
 require_relative 'module_sliding'
 require_relative 'module_stepping'
 require 'singleton'
-
+# require 'byebug'
 class Piece
   attr_reader :color
   attr_accessor :pos
@@ -135,5 +135,30 @@ class Pawn < Piece
 
   def to_s
     "X"
+  end
+
+  def possible_moves
+    moves = []
+    forward_one = [@pos[0]+@direction,@pos[1]]
+    forward_two = [@pos[0]+@direction * 2,@pos[1]]
+    diagonal_left = [@pos[0]+@direction,@pos[1]-1]
+    diagonal_right = [@pos[0]+@direction,@pos[1]+1]
+
+    if @board.on_board?(forward_one) && @board[forward_one].is_a?(NullPiece)
+      moves << forward_one
+    end
+    if @board.on_board?(forward_two) && (@pos[0] == @start_row) &&
+      @board[forward_two].is_a?(NullPiece) && @board[forward_one].is_a?(NullPiece)
+      moves << forward_two
+    end
+    if @board.on_board?(diagonal_left) && !@board[diagonal_left].is_a?(NullPiece) &&
+      @board[diagonal_left].color != @color
+      moves << diagonal_left
+    end
+    if @board.on_board?(diagonal_right) && !@board[diagonal_right].is_a?(NullPiece) &&
+      @board[diagonal_right].color != @color
+      moves << diagonal_right
+    end
+    moves
   end
 end

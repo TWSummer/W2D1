@@ -1,3 +1,4 @@
+require 'byebug'
 module Slideable
 
   def moves
@@ -39,7 +40,7 @@ module Slideable
       row += x
       col += y
     end
-    if @board.on_board?([row, col]) && !@board[[row,col]].color == @color
+    if @board.on_board?([row, col]) && @board[[row,col]].color != @color
       moves << [row, col]
     end
     moves

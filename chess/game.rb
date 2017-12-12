@@ -24,7 +24,7 @@ class Game
 
   def make_move(move)
 
-    @board[move[0]], @board[move[1]] = @board[move[1]], @board[move[0]]
+    @board[move[0]], @board[move[1]] = NullPiece.instance, @board[move[0]]
     @board[move[0]].pos = move[0].dup
     @board[move[1]].pos = move[1].dup
   end
