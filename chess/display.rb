@@ -17,24 +17,16 @@ class Display
   end
 
   def get_move
-    possible_moves = []
-    while possible_moves.empty?
-      @first_pos = nil
-
-      while @first_pos.nil?
-        render
-        @first_pos = @cursor.get_input
-      end
-      @first_pos = @first_pos.dup
-      possible_moves = @board[@first_pos].valid_moves
+    @possible_moves = get_first_pos
+    @possible_moves << @first_pos
+    get_sec_pos
+    if @first_pos == @sec_pos
+      get_move
+    else
+      [@first_pos,@sec_pos.dup]
     end
-    @sec_pos = nil
-    until possible_moves.include?(@sec_pos)
-      render
-      @sec_pos = @cursor.get_input
-    end
-    [@first_pos,@sec_pos.dup]
   end
+
 
   def render
     system("clear")
@@ -48,6 +40,29 @@ class Display
   end
 
   private
+
+  def get_first_pos
+    possible_moves = []
+    while possible_moves.empty?
+      @first_pos = nil
+
+      while @first_pos.nil?
+        render
+        @first_pos = @cursor.get_input
+      end
+      @first_pos = @first_pos.dup
+      possible_moves = @board[@first_pos].valid_moves
+    end
+    possible_moves
+  end
+
+  def get_sec_pos
+    @sec_pos = nil
+    until @possible_moves.include?(@sec_pos)
+      render
+      @sec_pos = @cursor.get_input
+    end
+  end
 
   def render_piece(string, pos)
     color = @board[pos].color
