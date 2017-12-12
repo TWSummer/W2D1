@@ -30,7 +30,7 @@ class NullPiece < Piece
   end
 
   def to_s
-    " "
+    "  "
   end
 
   def possible_moves
@@ -58,7 +58,7 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    "B"
+    "♗ "
   end
 
 end
@@ -72,7 +72,7 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    "R"
+    "♖ "
   end
 
 end
@@ -86,7 +86,7 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    "Q"
+    "♕ "
   end
 
 end
@@ -109,7 +109,7 @@ class Knight < SteppingPiece
   end
 
   def to_s
-    "K"
+    "♘ "
   end
 
 end
@@ -121,7 +121,7 @@ class King < SteppingPiece
   end
 
   def to_s
-    "O"
+    "♔ "
   end
 
 end
@@ -134,7 +134,7 @@ class Pawn < Piece
   end
 
   def to_s
-    "X"
+    "♙ "
   end
 
   def possible_moves

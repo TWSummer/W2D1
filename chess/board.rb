@@ -12,13 +12,13 @@ class Board
         if rowidx >= 2 && rowidx <= 5
           @board[rowidx][colidx] = NullPiece.instance
         elsif rowidx == 0
-          @board[rowidx] = end_row(rowidx, :white)
-        elsif rowidx == 1
-          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :white)
-        elsif rowidx == 7
           @board[rowidx] = end_row(rowidx, :black)
-        elsif rowidx == 6
+        elsif rowidx == 1
           @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :black)
+        elsif rowidx == 7
+          @board[rowidx] = end_row(rowidx, :white)
+        elsif rowidx == 6
+          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :white)
         end
       end
     end
@@ -55,13 +55,8 @@ class Board
     pieces << Rook.new(self, [row, 0], color)
     pieces << Knight.new(self, [row, 1], color)
     pieces << Bishop.new(self, [row, 2], color)
-    if row == 0
-      pieces << King.new(self, [row, 3], color)
-      pieces << Queen.new(self, [row, 4], color)
-    else
-      pieces << Queen.new(self, [row, 3], color)
-      pieces << King.new(self, [row, 4], color)
-    end
+    pieces << Queen.new(self, [row, 3], color)
+    pieces << King.new(self, [row, 4], color)
     pieces << Bishop.new(self, [row, 5], color)
     pieces << Knight.new(self, [row, 6], color)
     pieces << Rook.new(self, [row, 7], color)
