@@ -16,9 +16,9 @@ class Board
         elsif rowidx == 1
           @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :black)
         elsif rowidx == 7
-          @board[rowidx] = end_row(rowidx, :white)
+          @board[rowidx] = end_row(rowidx, :light_black)
         elsif rowidx == 6
-          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :white)
+          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :light_black)
         end
       end
     end

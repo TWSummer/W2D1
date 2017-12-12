@@ -2,7 +2,7 @@ require_relative 'display'
 require_relative 'player'
 class Game
   def initialize(current_name, alt_name)
-    @current = Player.new(current_name, :white)
+    @current = Player.new(current_name, :light_black)
     @alt = Player.new(alt_name, :black)
     @board = Board.new
     @board.populate

@@ -156,13 +156,15 @@ class Display
   end
 
   def render_piece(string, pos)
+    sum = pos.reduce(:+)
+    background = sum.even? ? :white : :light_white
     color = @board[pos].color
     if pos == @cursor.cursor_pos
       print string.colorize(:color => color, :background => :red)
     elsif pos == @first_pos
       print string.colorize(:color => color, :background => :yellow)
     else
-      print string.colorize(color)
+      print string.colorize(:color => color, :background => background)
     end
   end
 end
