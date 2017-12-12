@@ -3,7 +3,9 @@ require_relative 'module_stepping'
 require 'singleton'
 
 class Piece
-  attr_reader :color, :position
+  attr_reader :color
+  attr_accessor :pos
+
   def initialize(board, position, color)
     @board = board
     @pos = position
@@ -133,5 +135,5 @@ class Pawn < Piece
 
   def to_s
     "X"
-  end 
+  end
 end
