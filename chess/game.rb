@@ -11,6 +11,14 @@ class Game
     @display = Display.new(@board)
   end
 
+  def self.start_game
+    puts "Player 1: What is your name?"
+    name1 = gets.chomp
+    puts "Player 2: What is your name?"
+    name2 = gets.chomp
+    Game.new(name1, name2).play
+  end
+
   def play
     until won?
       @display.get_move(@current.color)
@@ -35,6 +43,5 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new("Edward", "Theo")
-  game.play
+  Game.start_game
 end
