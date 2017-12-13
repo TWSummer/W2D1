@@ -2,6 +2,7 @@ require_relative 'piece'
 
 class Board
   attr_reader :board
+
   def initialize
     @board = Array.new(8) {Array.new(8)}
   end
@@ -16,20 +17,11 @@ class Board
         elsif rowidx == 1
           @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :black)
         elsif rowidx == 7
-          @board[rowidx] = end_row(rowidx, :light_black)
+          @board[rowidx] = end_row(rowidx, :red)
         elsif rowidx == 6
-          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :light_black)
+          @board[rowidx][colidx] = Pawn.new(self, [rowidx, colidx], :red)
         end
       end
-    end
-  end
-
-  def move_piece(start_pos, end_pos)
-    if @board[start_pos].is_a?(NullPiece)
-      raise ArgumentError.new "no piece at starting position"
-    end
-    unless on_board?(start_pos) && on_board?(end_pos)
-      raise ArgumentError.new "Position outside of board"
     end
   end
 

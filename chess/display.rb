@@ -4,35 +4,17 @@ require_relative 'cursor'
 
 class Display
   attr_reader :cursor
+
   def initialize(board)
     @board = board
     @cursor = Cursor.new([0,0],board)
   end
 
-  def play
-    while true
-      render
-      @cursor.get_input
-    end
-  end
-
   def get_move(color)
     @possible_moves = get_first_pos(color)
     @possible_moves << @first_pos
-    get_sec_pos
-    if @first_pos == @sec_pos
-      return get_move(color)
-    else
-      first_piece = @board[@first_pos]
-      second_piece = @board[@sec_pos]
-      make_move([@first_pos,@sec_pos])
-      if in_check?(color)
-        @board[@first_pos] = first_piece
-        @board[@sec_pos] = second_piece
-        return get_move(color)
-      end
-    end
-    nil
+    get_sec_pos(color)
+    test_move(color)
   end
 
   def make_move(move)
@@ -41,7 +23,7 @@ class Display
     @board[move[1]].pos = move[1].dup
   end
 
-  def render
+  def render(color=nil)
     system("clear")
     @board.board.each.with_index do |row, rowidx|
       row.each.with_index do |piece, colidx|
@@ -49,30 +31,51 @@ class Display
       end
       puts
     end
+    puts "#{color.to_s.capitalize} make move" unless color.nil?
     nil
   end
 
   def checkmate?(color)
     checkmate = false
-    if in_check?(color)
-      all_pieces_pos = find_my_pieces(color)
-      all_my_moves = []
-      all_pieces_pos.each do |pos|
-        @board[pos].valid_moves.each do |end_move|
-          all_my_moves << [pos, end_move]
-        end
-      end
-      all_my_moves = all_my_moves.reject do |pair_pos|
-        test_check?(pair_pos, color)
-      end
-      checkmate = all_my_moves.empty?
-    end
+    checkmate = any_moves?(color) if in_check?(color)
     checkmate
   end
 
   private
 
+  def any_moves?(color)
+    all_pieces_pos = find_my_pieces(color)
+    all_my_moves = []
+    all_pieces_pos.each do |pos|
+      @board[pos].valid_moves.each do |end_move|
+        all_my_moves << [pos, end_move]
+      end
+    end
+    all_my_moves = all_my_moves.reject do |pair_pos|
+      test_check?(pair_pos, color)
+    end
+    all_my_moves.empty?
+  end
 
+  def test_move(color)
+    if @first_pos == @sec_pos
+      return get_move(color)
+    else
+      return revert_if_check(color)
+    end
+    nil
+  end
+
+  def revert_if_check(color)
+    first_piece = @board[@first_pos]
+    second_piece = @board[@sec_pos]
+    make_move([@first_pos,@sec_pos])
+    if in_check?(color)
+      @board[@first_pos] = first_piece
+      @board[@sec_pos] = second_piece
+      return get_move(color)
+    end
+  end
 
   def test_check?(move, color)
     first_piece = @board[move[0]]
@@ -135,7 +138,7 @@ class Display
       @first_pos = nil
 
       while @first_pos.nil?
-        render
+        render(color)
         @first_pos = @cursor.get_input
         unless @first_pos.nil?
           @first_pos = nil unless @board[@first_pos].color == color
@@ -147,10 +150,10 @@ class Display
     possible_moves
   end
 
-  def get_sec_pos
+  def get_sec_pos(color)
     @sec_pos = nil
     until @possible_moves.include?(@sec_pos)
-      render
+      render(color)
       @sec_pos = @cursor.get_input
     end
   end
@@ -160,7 +163,7 @@ class Display
     background = sum.even? ? :white : :light_white
     color = @board[pos].color
     if pos == @cursor.cursor_pos
-      print string.colorize(:color => color, :background => :red)
+      print string.colorize(:color => color, :background => :light_yellow)
     elsif pos == @first_pos
       print string.colorize(:color => color, :background => :yellow)
     else
